@@ -26,6 +26,7 @@ if __name__ == '__main__':
         '/home/stewie/Clocks_Ke/clockske/static/css/input.css',
         '-o',
         '/home/stewie/Clocks_Ke/clockske/static/css/output.css',
+        '--watch',
     ]
     subprocess.Popen(tailwind_command)
     main()

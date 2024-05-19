@@ -1,0 +1,21 @@
+{% extends 'store/index.html' %}{%load static%} {% block content %}
+
+<div
+  class="banner flex items-center gap-8 bg-gray-200 mx-auto my-auto p-10 max-h-max"
+>
+  <div class="banner-msg w-full xl:w-1/2 md:w-1/2 sm:w-full">
+    <h2 class="text-4xl font-bold">Time is Money, Invest in it</h2>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam
+    </p>
+    <button class="bg-black text-white p-3 hover:bg-red-400">Shop Now</button>
+  </div>
+  <div
+    class="banner-img w-full xl:w-1/2 md:w-1/2 sm:w-full flex justify-center"
+  >
+    <img src="{% static 'images/clock.svg' %}" class="w-[200px] h-[200px]" />
+  </div>
+</div>
+{% endblock %}

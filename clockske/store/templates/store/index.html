@@ -8,6 +8,37 @@
     <title>Clocks_ke</title>
   </head>
   <body>
-    {% block content %} {% endblock content%}
+    <section class="main">
+      <div
+        class="navbar w-full h-3/6 flex flex-row p-6 justify-between items-baseline my-auto"
+      >
+        <div class="logo flex-shrink-0">
+          <a
+            href='{% url "store" %}'
+            class="text-2xl border-solid border-2 border-black p-2"
+          >
+            CLOCKS_KE
+          </a>
+        </div>
+        <div class="shop"><a href="#" class="text-2xl">Shop</a></div>
+        <div class="end flex space-x-4 items-baseline">
+          <a href="#" class="search"
+            ><img
+              class="h-6 w-6 align-self-end"
+              src="{% static 'images/search.png' %}"
+          /></a>
+          <a href="#"
+            ><img
+              class="h-5 w-5 align-self-end"
+              src="{% static 'images/like.png' %}"
+          /></a>
+          <a href="{% url 'cart' %}" class="cart text-xl">Cart(0)</a>
+        </div>
+      </div>
+      {% block content %} {% endblock content%}
+      <div class="footer bg-black text-white mn-h-[10vh] my-auto text-center">
+        <div class="footer-content">© 2024 CLOCKS_KE</div>
+      </div>
+    </section>
   </body>
 </html>
