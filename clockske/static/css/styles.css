@@ -1,0 +1,129 @@
+body {
+  font-family: monospace;
+  margin: 0;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* navbar */
+.custom-nav .custom-navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  min-height: 80px;
+}
+
+.navbar-logo {
+  font-size: 20px;
+  font-weight: bold;
+  border: solid 2px black;
+  padding: 5px;
+}
+
+.custom-navbar a {
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
+}
+
+.custom-navbar .end {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+a img {
+  width: 20px;
+  height: 20px;
+}
+
+/* store page*/
+.barner {
+  background-color: #e5e5e5;
+  min-height: 50vh;
+  align-content: center;
+}
+.barner-img {
+  display: flex;
+  justify-content: center;
+  height: 300px;
+  width: 300px;
+}
+
+.container .barner-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: auto;
+}
+
+.barner-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.barner-text .shop-now {
+  border: none;
+}
+.barner-text .shop-now:hover {
+  background-color: coral;
+}
+
+/* Trending Products section */
+.trending {
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.trending .p-image {
+  background-color: #e5e5e5;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.trending .p-image img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
+
+.trending .p-details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.trending .p-details .p-text {
+  max-width: 70%;
+}
+.trending .p-details .price {
+  align-self: flex-end;
+  margin-left: auto;
+  padding-right: 5px;
+  font-weight: 600;
+}
+
+.trending .p-details .product-name {
+  font-weight: bold;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+/* footer */
+.footer-content {
+  background-color: black;
+  min-height: 60px;
+  color: white;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+}
