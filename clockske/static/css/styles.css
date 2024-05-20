@@ -1,10 +1,22 @@
 body {
-  font-family: monospace;
+  font-family: monospace !important;
   margin: 0;
-  position: relative;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
+button {
+  cursor: pointer;
+}
+
+i {
+  color: black;
+}
+
+.btn-link {
+  color: black;
+}
 /* navbar */
 .custom-nav .custom-navbar {
   display: flex;
@@ -26,6 +38,10 @@ body {
   text-decoration: none;
   color: black;
   font-size: 20px;
+}
+
+.custom-navbar a:hover {
+  color: black;
 }
 
 .custom-navbar .end {
@@ -68,9 +84,11 @@ a img {
 
 .barner-text .shop-now {
   border: none;
+  background-color: #14213d;
+  color: #ffffff;
 }
 .barner-text .shop-now:hover {
-  background-color: coral;
+  background-color: #fca311;
 }
 
 /* Trending Products section */
@@ -116,14 +134,37 @@ a img {
   margin-bottom: 0;
 }
 
+.trending .p-action {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+}
+
+.trending .p-action button {
+  background-color: #14213d;
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+.trending .p-action button:hover {
+  background-color: #fca311;
+}
+
 /* footer */
+.footer {
+  margin-top: auto;
+}
 .footer-content {
   background-color: black;
   min-height: 60px;
   color: white;
   text-align: center;
-  position: relative;
-  bottom: 0;
   width: 100%;
   height: 2.5rem;
+}
+
+.footer-content p {
+  padding-top: 20px;
+  margin: auto 0 auto 0;
 }
