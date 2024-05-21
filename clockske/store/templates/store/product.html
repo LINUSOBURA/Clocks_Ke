@@ -1,0 +1,40 @@
+{% extends 'store/index.html' %} {% block content %} {% load static %}
+<section class="product">
+	<div class="container">
+		<div class="row product-row">
+		  <div class="col-md-6 product-image">
+			<div class="p-image">
+			  <img src="{% static 'images/clock1.png' %}" alt="" />
+			</div>
+			
+		  </div>
+		  <div class="col-md-6 product-description">
+			<div class="p-details">
+				<div class="p-text">
+				  <p class="product-name">Clock 1</p>
+				  <p class="product-text">
+					Lorem ipsum Lorem ipsum dolor sit amet consectetur adipisicing
+					elit.
+				  </p>
+				</div>
+				<div class="price">
+				  <p class="product-price">$100</p>
+				</div>
+			  </div>
+			  <div class="p-action">
+				<div class="quantity">
+					<p>Quantity: </p>
+					<p class="minus">-</p>
+					<p>2</p>
+					<p class="plus">+</p>
+				</div>
+				<a href="#"><button class="btn">Add to Cart</button></a>
+				<a href="{% url 'checkout' %}"
+				  ><button class="btn">Buy Now</button></a
+				>
+			  </div>
+		  	</div>
+		</div>
+</section>
+
+{%endblock %}

@@ -1,3 +1,70 @@
-{% extends 'store/index.html' %} {% block content %}
-<h1>store</h1>
+{% extends 'store/index.html' %} {% block content %} {% load static %}
+<section class="barner">
+  <div class="container">
+    <div class="row barner-row">
+      <div class="col-md-6 barner-text">
+        <h2>Time is money, Invest on it</h2>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p>
+		<a href="{% url 'shop' %}"><button class="shop-now btn">Shop Now</button></a>
+		
+      </div>
+      <div class="col-md-6 barner-img">
+        <img src="{% static 'images/clock2.png' %}" alt="" />
+      </div>
+    </div>
+  </div>
+  <div class="container text-center">
+</section>
+
+<section class="trending">
+	<h4>Trending Designs</h4>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="p-image"><img src="{% static 'images/clock1.png' %}" alt="" /></div>
+				<div class="p-details">
+					<div class="p-text">
+						<p class="product-name">Clock 1</p>
+						<p class="product-description">Lorem ipsum Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+					</div>
+					<div class="price">
+						<p class="product-price">$100</p>
+					</div>
+				</div>
+				<div class="p-action">
+					<a href="#"><button class="btn">Add to Cart</button></a>
+					<a href="{% url 'checkout' %}"><button class="btn">Buy Now</button></a>
+					
+				</div>
+				
+			</div>
+
+			<div class="col-md-4">
+				<div class="p-image"><img src="{% static 'images/clock1.png' %}" alt="" /></div>
+				<div class="p-details">
+					<div class="p-text"><p class="product-name">Clock 1</p>
+					<p class="product-description">Lorem ipsum Lorem ipsum dolor sit amet consectetur adipisicing elit.</p></div>
+					<div class="price"><p class="product-price">$100</p></div>
+				</div>
+				<div class="p-action">
+					<button class="btn">Add to Cart</button>
+					<button class="btn">Buy Now</button>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="p-image"><img src="{% static 'images/clock1.png' %}" alt="" /></div>
+				<div class="p-details">
+					<div class="p-text"><p class="product-name">Clock 1</p>
+					<p class="product-description">Lorem ipsum Lorem ipsum dolor sit amet consectetur adipisicing elit.</p></div>
+					<div class="price"><p class="product-price">$100</p></div>
+				</div>
+				<div class="p-action">
+					<button class="btn">Add to Cart</button>
+					<button class="btn">Buy Now</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
 {% endblock %}
