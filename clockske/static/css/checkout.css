@@ -48,7 +48,6 @@
 }
 .checkout-order .order-summary {
   display: flex;
-  flex-direction: row;
   flex: 1;
 }
 
@@ -77,6 +76,7 @@
 }
 
 .totals .total {
+  color: #fca311;
   font-weight: 900;
 }
 

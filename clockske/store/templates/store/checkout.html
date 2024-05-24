@@ -7,9 +7,7 @@
         <form action="">
           <div class="row">
             <div class="col-md-6">
-              <label for="inputEmail4" class="form-label imp"
-                >First Name*</label
-              >
+              <label for="inputEmail4" class="form-label imp">First Name*</label>
               <input type="text" class="form-control" aria-label="First name" />
             </div>
             <div class="col-md-6">
@@ -19,20 +17,13 @@
 
             <div class="col-12">
               <label for="inputEmail4" class="form-label imp">Email*</label>
-              <input
-                type="email"
-                class="form-control"
-                placeholder="example@company.com"
-                aria-label="Email"
-              />
+              <input type="email" class="form-control" placeholder="example@company.com" aria-label="Email" />
             </div>
 
             <div class="col-12">
-              <label for="inputstate" class="form-label imp"
-                >State/Province*</label
-              >
+              <label for="inputstate" class="form-label imp">State/Province*</label>
               <select class="form-select" id="autoSizingSelect">
-				<option value="selected">...</option>
+                <option value="selected">...</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
                 <option value="3">Three</option>
@@ -41,7 +32,7 @@
             <div class="col-6">
               <label for="inputEmail4" class="form-label imp">City*</label>
               <select class="form-select" id="autoSizingSelect">
-				<option value="selected">...</option>
+                <option value="selected">...</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
                 <option value="3">Three</option>
@@ -50,7 +41,7 @@
             <div class="col-6">
               <label for="inputEmail4" class="form-label imp">District*</label>
               <select class="form-select" id="autoSizingSelect">
-				<option value="selected">...</option>
+                <option value="selected">...</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
                 <option value="3">Three</option>
@@ -63,54 +54,55 @@
 
             <div class="col">
               <label for="phone" class="form-label imp">Phone Number*</label>
-              <input
-                type="number"
-                class="form-control"
-                aria-label="Last name"
-              />
+              <input type="number" class="form-control" aria-label="Last name" />
             </div>
           </div>
 
-		  <button type="submit" class="btn">Continue</button">
+          <button type="submit" class="btn">Continue</button">
         </form>
       </div>
       <div class="col-md-6 checkout-order">
         <h3>My Order</h3>
-		<hr>
+        <hr>
 
-		<div class="order-summary">
-			<img src="{% static 'images/clock1.png' %}" alt="">
-			<div class="order-description">
-				<p class="product-name">Clock 1</p>
-				<p class="quantity">Quantity: 2</p>
-				<p class="product-price">$100</p>
-			</div>
-		</div>
-		<hr>
+        {% for item in items %}
+        <div class="order-summary">
 
-		<div class="totals mb-auto">
-			<div class="subtotal">
-				<p>Cart Subtotal</p>
-				<p>$200</p>
-			</div>
+          <img src="{{ item.product.image.url }}" alt="">
+          <div class="order-description">
+            <p class="product-name">{{item.product.name}}</p>
+            <p class="quantity">Quantity: {{item.quantity}}</p>
+            <p class="product-price">${{item.get_total | floatformat:2}}</p>
+          </div>
 
-			<div class="shipping">
-				<p>Shipping</p>
-				<p>$40</p>
-			</div>
+        </div>
+        {% endfor %}
 
-			<hr>
+        <hr>
 
-			<div class="total">
-				<p>Total</p>
-				<p>$240</p>
-			</div>
-			
-		</div>
+        <div class="totals mb-auto">
+          <div class="subtotal">
+            <p>Cart Subtotal</p>
+            <p>${{order.get_cart_total | floatformat:2}}</p>
+          </div>
 
-		<div class="place-order">
-			<button class="btn">Place Order</button>
-		</div>
+          <div class="shipping">
+            <p>Shipping</p>
+            <p>$0</p>
+          </div>
+
+          <hr>
+
+          <div class="total">
+            <p>Total</p>
+            <p>${{order.get_cart_total | floatformat:2}}</p>
+          </div>
+
+        </div>
+
+        <div class="place-order">
+          <button class="btn">Place Order</button>
+        </div>
       </div>
     </div>
   </div>

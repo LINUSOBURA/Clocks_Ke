@@ -2,85 +2,30 @@
 <section class="shop">
   <div class="container">
     <div class="row">
-      <div class="col-md-3">
+      {% for product in products %}
+      <div class="col-md-4 col-lg-3 col">
         <div class="product-card">
-          <a href="{% url 'product' %}">
+          <a
+            href="#"
+            class="show-product-details"
+            data-product="{{product.id}}"
+          >
             <div class="p-image">
-              <img src="{% static 'images/clock1.png' %}" alt="" />
+              <img src="{{ product.image.url }}" alt="" />
             </div>
             <div class="p-details">
               <div class="p-text">
-                <p class="product-name">Clock 1</p>
+                <p class="product-name">{{product.name}}</p>
                 <p class="product-description">
-                  Lorem ipsum Lorem ipsum dolor sit amet consectetur adipisicing
-                  elit.
+                  {{product.details | truncatechars:50}}
                 </p>
-                <p class="product-price">$100</p>
+                <p class="product-price">${{product.price | floatformat:2}}</p>
               </div>
             </div>
           </a>
         </div>
       </div>
-
-      <div class="col-md-3">
-        <div class="product-card">
-          <a href="{% url 'product' %}">
-            <div class="p-image">
-              <img src="{% static 'images/clock1.png' %}" alt="" />
-            </div>
-            <div class="p-details">
-              <div class="p-text">
-                <p class="product-name">Clock 1</p>
-                <p class="product-description">
-                  Lorem ipsum Lorem ipsum dolor sit amet consectetur adipisicing
-                  elit.
-                </p>
-                <p class="product-price">$100</p>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="product-card">
-          <a href="{% url 'product' %}">
-            <div class="p-image">
-              <img src="{% static 'images/clock1.png' %}" alt="" />
-            </div>
-            <div class="p-details">
-              <div class="p-text">
-                <p class="product-name">Clock 1</p>
-                <p class="product-description">
-                  Lorem ipsum Lorem ipsum dolor sit amet consectetur adipisicing
-                  elit.
-                </p>
-                <p class="product-price">$100</p>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="product-card">
-          <a href="{% url 'product' %}">
-            <div class="p-image">
-              <img src="{% static 'images/clock1.png' %}" alt="" />
-            </div>
-            <div class="p-details">
-              <div class="p-text">
-                <p class="product-name">Clock 1</p>
-                <p class="product-description">
-                  Lorem ipsum Lorem ipsum dolor sit amet consectetur adipisicing
-                  elit.
-                </p>
-                <p class="product-price">$100</p>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
+      {% endfor %}
     </div>
   </div>
 </section>
