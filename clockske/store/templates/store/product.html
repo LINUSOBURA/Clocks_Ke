@@ -2,33 +2,26 @@
 <section class="product">
 	<div class="container">
 		<div class="row product-row">
-		  <div class="col-md-6 product-image">
+		  <div class="col-sm-6 product-image">
 			<div class="p-image">
-			  <img src="{% static 'images/clock1.png' %}" alt="" />
+			  <img src="{{ product.image.url }}" alt="" class="img-fluid" />
 			</div>
 			
 		  </div>
-		  <div class="col-md-6 product-description">
+		  <div class="col-sm-6 product-description">
 			<div class="p-details">
 				<div class="p-text">
-				  <p class="product-name">Clock 1</p>
+				  <p class="product-name">{{product.name}}</p>
 				  <p class="product-text">
-					Lorem ipsum Lorem ipsum dolor sit amet consectetur adipisicing
-					elit.
+					{{product.details}}
 				  </p>
 				</div>
 				<div class="price">
-				  <p class="product-price">$100</p>
+				  <p class="product-price">${{product.price | floatformat:2}}</p>
 				</div>
 			  </div>
 			  <div class="p-action">
-				<div class="quantity">
-					<p>Quantity: </p>
-					<p class="minus">-</p>
-					<p>2</p>
-					<p class="plus">+</p>
-				</div>
-				<a href="#"><button class="btn">Add to Cart</button></a>
+				<button class="btn update-cart" data-product="{{product.id}}" data-action="add">Add to Cart</button>
 				<a href="{% url 'checkout' %}"
 				  ><button class="btn">Buy Now</button></a
 				>

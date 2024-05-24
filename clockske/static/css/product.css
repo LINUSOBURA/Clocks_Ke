@@ -28,11 +28,20 @@
   padding-top: 10px;
 }
 
+.product .p-details .product-name {
+  font-weight: bold;
+}
+
+.product .p-details .product-price {
+  color: #fca311;
+  font-weight: bold;
+}
+
 .product .product-description .p-action {
   margin-top: auto;
 }
 
-.product .product-description .p-action .quantity {
+.quantity {
   display: flex;
   gap: 20px;
 }
