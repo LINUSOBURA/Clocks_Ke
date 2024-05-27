@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -70,10 +72,15 @@ class Order(models.Model):
                                  null=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False)
-    transaction_id = models.CharField(max_length=100, null=True)
+    transaction_id = models.CharField(max_length=100, default=uuid.uuid4)
 
     def __str__(self):
         return str(self.transaction_id)
+
+    @property
+    def shipping(self):
+        shipping = True
+        return shipping
 
     @property
     def get_cart_total(self):
@@ -96,7 +103,8 @@ class ShippingAddress(models.Model):
     address = models.CharField(max_length=200, null=False)
     city = models.CharField(max_length=200, null=False)
     state = models.CharField(max_length=200, null=False)
-    zipcode = models.CharField(max_length=200, null=False)
+    district = models.CharField(max_length=200, null=False)
+    phone = models.CharField(max_length=200, null=False)
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
