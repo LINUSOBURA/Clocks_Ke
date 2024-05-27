@@ -24,6 +24,7 @@
     <script src="{% static 'js/main.js' %}"></script>
     <script>
       let user = "{{request.user}}";
+      let cart_total = "{{order.get_cart_items}}";
       function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== "") {
