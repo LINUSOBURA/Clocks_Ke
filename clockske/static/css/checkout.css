@@ -98,3 +98,33 @@
 .hidden {
   display: none;
 }
+
+.complete .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #c9f5c9;
+  margin-top: 50px;
+  padding: 30px;
+  max-width: 50%;
+}
+
+.complete-text button a {
+  text-decoration: none;
+  color: black;
+}
+
+.complete-text i {
+  margin-bottom: 20px;
+}
+
+.complete-text button {
+  outline: solid 2px #0d9b59;
+  margin-top: 30px;
+}
+.complete-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

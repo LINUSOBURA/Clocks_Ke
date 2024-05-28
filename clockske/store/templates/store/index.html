@@ -53,15 +53,22 @@
 
         <a href="{% url 'shop' %}">Shop</a>
         <div class="end">
-          {% if user.is_authenticated %}
-          <a class="logout" href="{% url 'logout'%}"
-            ><p>Hello {{ user.first_name }}</p></a
-          >
+          <div class="user-profile d-none d-md-block">
+            {% if user.is_authenticated %}
+            <a class="logout" href="{% url 'logout'%}"
+              ><p>
+                <i class="fa-regular fa-user"></i> {{ user.first_name }}
+              </p></a
+            >
 
-          {% else %}
-          <a href="{% url 'login' %}"><p>Hello Customer</p></a>
+            {% else %}
+            <a href="{% url 'login' %}"
+              ><p><i class="fa-regular fa-user"></i> Customer</p></a
+            >
 
-          {% endif %}
+            {% endif %}
+          </div>
+
           <a href="#"><img src="{% static 'images/search.png' %}" /></a>
           <a href="#"><img src="{% static 'images/like.png' %}" /></a>
           <a href="{% url 'cart' %}">Cart({{order.get_cart_items}})</a>

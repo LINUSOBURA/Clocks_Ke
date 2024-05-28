@@ -195,3 +195,7 @@ def processOrder(request):
     else:
         return redirect('login')
     return JsonResponse('Payment complete', safe=False)
+
+
+def orderComplete(request):
+    return render(request, 'store/order_complete.html')

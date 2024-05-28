@@ -72,6 +72,7 @@ class Order(models.Model):
                                  null=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False)
+    shipped = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100, default=uuid.uuid4)
 
     def __str__(self):
