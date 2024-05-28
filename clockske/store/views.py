@@ -169,3 +169,33 @@ def UpdateItem(request):
         orderItem.delete()
 
     return JsonResponse('Item was added', safe=False)
+
+
+def processOrder(request):
+    print('Data:', request.body)
+    data = json.loads(request.body)
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer,
+                                                     complete=False)
+        total = float(data['form']['total'])
+
+        if total == order.get_cart_total:
+            order.complete = True
+        order.save()
+
+        ShippingAddress.objects.create(customer=customer,
+                                       order=order,
+                                       address=data['shipping']['address'],
+                                       city=data['shipping']['city'],
+                                       state=data['shipping']['state'],
+                                       district=data['shipping']['district'],
+                                       phone=data['shipping']['phone'])
+
+    else:
+        return redirect('login')
+    return JsonResponse('Payment complete', safe=False)
+
+
+def orderComplete(request):
+    return render(request, 'store/order_complete.html')

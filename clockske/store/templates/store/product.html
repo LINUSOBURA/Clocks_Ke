@@ -2,31 +2,29 @@
 <section class="product">
 	<div class="container">
 		<div class="row product-row">
-		  <div class="col-sm-6 product-image">
-			<div class="p-image">
-			  <img src="{{ product.image.url }}" alt="" class="img-fluid" />
+			<div class="col-sm-6 product-image">
+				<div class="p-image">
+					<img src="{{ product.image.url }}" alt="" class="img-fluid" />
+				</div>
+
 			</div>
-			
-		  </div>
-		  <div class="col-sm-6 product-description">
-			<div class="p-details">
-				<div class="p-text">
-				  <p class="product-name">{{product.name}}</p>
-				  <p class="product-text">
-					{{product.details}}
-				  </p>
+			<div class="col-sm-6 product-description">
+				<div class="p-details">
+					<div class="p-text">
+						<p class="product-name">{{product.name}}</p>
+						<p class="product-text">
+							{{product.details}}
+						</p>
+					</div>
+					<div class="price">
+						<p class="product-price">${{product.price | floatformat:2}}</p>
+					</div>
 				</div>
-				<div class="price">
-				  <p class="product-price">${{product.price | floatformat:2}}</p>
+				<div class="p-action">
+					<button class="btn update-cart" data-product="{{product.id}}" data-action="add">Add to Cart</button>
+					<button class="btn buy-now update-cart" data-product="{{product.id}}" data-action="add">Buy Now</button>
 				</div>
-			  </div>
-			  <div class="p-action">
-				<button class="btn update-cart" data-product="{{product.id}}" data-action="add">Add to Cart</button>
-				<a href="{% url 'checkout' %}"
-				  ><button class="btn">Buy Now</button></a
-				>
-			  </div>
-		  	</div>
+			</div>
 		</div>
 </section>
 
