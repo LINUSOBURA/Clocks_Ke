@@ -139,7 +139,7 @@ def user_login(request):
 # Logout page
 def user_logout(request):
     logout(request)
-    return redirect('store')
+    return redirect('login')
 
 
 # Add to Cart functionality
@@ -199,3 +199,25 @@ def processOrder(request):
 
 def orderComplete(request):
     return render(request, 'store/order_complete.html')
+
+
+def profile(request):
+    orders = []
+    orderItems = []
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        try:
+            orders = Order.objects.filter(customer=customer, complete=True)
+            for order in orders:
+                orderItems = OrderItem.objects.filter(order=order)
+        except Order.DoesNotExist:
+            orders = ['No orders yet']
+            orderItems = []
+    context = {'orders': orders, 'orderItems': orderItems}
+    return render(request, 'store/profile.html', context)
+
+
+def allOrders(request):
+    allorders = Order.objects.all(complete=True)
+    context = {'allorders': allorders}
+    return render(request, 'store/profile.html', context)

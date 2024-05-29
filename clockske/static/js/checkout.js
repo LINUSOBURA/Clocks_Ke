@@ -39,10 +39,6 @@ $(document).ready(function () {
       });
   }
 
-  $("#make-payment").click(function () {
-    submitFormData();
-  });
-
   // Render the PayPal button into #paypal-button-container
   paypal
     .Buttons({
@@ -68,6 +64,19 @@ $(document).ready(function () {
       onApprove: function (data, actions) {
         return actions.order.capture().then(function (Details) {
           console.log(Details);
+          let errorDetail = Details.error;
+
+          if (errorDetail && errorDetail.issue === "INSTRUMENT_DECLINED") {
+            return actions.restart();
+          }
+
+          if (errorDetail) {
+            var msg = "Sorry, your transaction could not be processed.";
+            if (errorDetail.description)
+              msg += "\n\n" + errorDetail.description;
+            if (orderData.debug_id) msg += " (" + orderData.debug_id + ")";
+            return toastr.error(msg);
+          }
           if (Details.status == "COMPLETED") {
             submitFormData();
           }
