@@ -48,6 +48,13 @@ $(document).ready(function () {
         shape: "pill",
         height: 40,
       },
+      /**
+       * Creates an order using the provided data and actions.
+       *
+       * @param {Object} data - The data object containing information about the order.
+       * @param {Object} actions - The actions object with methods for creating an order.
+       * @return {Promise} A promise that resolves to the created order.
+       */
       createOrder: function (data, actions) {
         return actions.order.create({
           purchase_units: [

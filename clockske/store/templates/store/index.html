@@ -81,10 +81,13 @@
 
             {% endif %}
           </div>
-
+          {% if user.is_staff %}
+          <a href="{% url 'admin:index' %}">Staff</a>
+          {% else %}
           <a href="#"><img src="{% static 'images/search.png' %}" /></a>
           <a href="#"><img src="{% static 'images/like.png' %}" /></a>
           <a href="{% url 'cart' %}">Cart({{order.get_cart_items}})</a>
+          {% endif %}
         </div>
       </div>
     </section>
