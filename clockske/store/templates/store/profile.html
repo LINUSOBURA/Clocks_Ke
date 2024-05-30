@@ -1,0 +1,153 @@
+{% extends 'store/index.html' %} {% block content %} {% load static %}
+
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+
+<section class="profile">
+  <div class="container profile-container">
+    <div class="row profile-row">
+      <div class="col-md-12 profile-text profile-col">
+        <div class="profile-info">
+          <div id="profile-pic">
+            <h2><i class="fa-regular fa-user" style="color: #ffffff"></i></h2>
+          </div>
+          {% if request.user.is_staff %}
+          <p>Staff</p>
+          {%endif%}
+        </div>
+
+        <p id="title">Name</p>
+        <p>{{user.first_name}} {{user.last_name}}</p>
+        <hr />
+        <p id="title">Email</p>
+        <p>{{user.email}}</p>
+        <hr />
+
+        <div class="actions">
+          <button id="view_orders">View Orders</button>
+          <a class="logout" href="{% url 'logout'%}"
+            ><button id="logout">Logout</button></a
+          >
+
+          <button class="staff-button hidden">Add Products</button>
+          <button class="staff-button hidden">Edit Products</button>
+        </div>
+      </div>
+    </div>
+    <div class="row profile-row">
+      <div id="show-orders-admin" class="hidden">
+        <div class="col-md-12 order-details profile-col">
+          <h4>Orders</h4>
+
+          {% if orders_with_shipping %}
+          <ul>
+            {% for item in orders_with_shipping %}
+            <li>
+              <div class="order-headline">
+                <div class="order-header">
+                  <p><strong>Order ID</strong></p>
+                  <p class="detail">
+                    {{item.order.transaction_id | truncatechars:8}}
+                  </p>
+                </div>
+                <div class="order-header">
+                  <p><strong>Order Date</strong></p>
+                  <p class="detail">{{item.order.date_ordered}}</p>
+                </div>
+                <div class="order-header">
+                  <p><strong>Shipped</strong></p>
+                  <p class="shipping-status">{{item.order.shipped}}</p>
+                </div>
+              </div>
+            </li>
+
+            <ul>
+              {% for orderitem in item.orderitems %}
+              <li>
+                <h6><strong>Items</strong></h6>
+                <div class="order-item-details">
+                  <p>
+                    {{ orderitem.product.name }} - {{ orderitem.quantity }} x
+                    {{orderitem.product.price | floatformat:2 }}
+                  </p>
+                  <p>
+                    Total Paid: <u>${{item.order_total | floatformat:2}}</u>
+                  </p>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+            <ul>
+              <li>
+                <h6><strong>Shipping Address</strong></h6>
+                <p>
+                  {{item.shipping_address.state}} |
+                  {{item.shipping_address.city}} |
+                  {{item.shipping_address.district}} |
+                  {{item.shipping_address.address}}
+                </p>
+              </li>
+              <li>
+                <h6><strong>Customer</strong></h6>
+                <p>
+                  {{item.customer.first_name}} | {{item.shipping_address.phone}}
+                  | {{item.customer.email}}
+                </p>
+              </li>
+            </ul>
+
+            <hr />
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>No orders Available.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div id="show-orders" class="hidden">
+        <div class="col-md-12 order-details profile-col">
+          <h4>Your Orders</h4>
+          {% if orders %}
+          <ul>
+            {% for order in orders %}
+            <li>
+              <div class="order-headline">
+                <div class="order-header">
+                  <p><strong>Order ID</strong></p>
+                  <p class="detail">
+                    {{order.transaction_id | truncatechars:8}}
+                  </p>
+                </div>
+                <div class="order-header">
+                  <p><strong>Order Date</strong></p>
+                  <p class="detail">{{order.date_ordered}}</p>
+                </div>
+                <div class="order-header">
+                  <p><strong>Shipped</strong></p>
+                  <p class="shipping-status">{{order.shipped}}</p>
+                </div>
+              </div>
+            </li>
+            <ul>
+              {% for item in orderItems %}
+              <li>
+                {{ item.product.name }} - {{ item.quantity }} x
+                {{item.product.price }}
+              </li>
+              {% endfor %}
+            </ul>
+            <hr />
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>You have no items in your current order.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="{% static 'js/profile.js' %}"></script>
+{%endblock%}

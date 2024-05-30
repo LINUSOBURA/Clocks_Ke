@@ -12,6 +12,17 @@ from .models import *
 
 
 def store(request):
+    """
+    Renders the store page for the user. If the user is authenticated, retrieves their order and its items. If not,
+    initializes an empty order and items list. Retrieves the three most recently created products and passes them to
+    the store template along with the order and items.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object.
+
+    Returns:
+    - HttpResponse: The rendered store page with the trending products, order, and items.
+    """
     try:
         if request.user.is_authenticated:
             customer = request.user.customer
@@ -36,12 +47,34 @@ def store(request):
 
 
 def shop(request):
+    """
+    Retrieves all products from the database and renders the 'store/shop.html' template with the retrieved products.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object.
+
+    Returns:
+    - HttpResponse: The rendered 'store/shop.html' template with the retrieved products.
+    """
     products = Product.objects.all()
     context = {'products': products}
     return render(request, 'store/shop.html', context)
 
 
 def product(request, product_id):
+    """
+    Retrieves a specific product from the database based on the provided product_id.
+    If the user is authenticated, retrieves the user's order and its items.
+    If the user is not authenticated, initializes an empty order and items list.
+    Renders the 'store/product.html' template with the retrieved product, items, and order.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object.
+    - product_id (int): The ID of the product to retrieve.
+
+    Returns:
+    - HttpResponse: The rendered 'store/product.html' template with the retrieved product, items, and order.
+    """
     product = get_object_or_404(Product, id=product_id)
     try:
         if request.user.is_authenticated:
@@ -60,6 +93,15 @@ def product(request, product_id):
 
 
 def cart(request):
+    """
+    Retrieves the user's cart items and order information. If the user is authenticated, retrieves their order and its items. If not, initializes an empty order and items list. Renders the 'store/cart.html' template with the items and order.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object.
+
+    Returns:
+    - HttpResponse: The rendered 'store/cart.html' template with the items and order.
+    """
 
     try:
         if request.user.is_authenticated:
@@ -78,6 +120,15 @@ def cart(request):
 
 
 def checkout(request):
+    """
+    Retrieves the user's cart items and order information. If the user is authenticated, retrieves their order and its items. If not, initializes an empty order and items list. Renders the 'store/checkout.html' template with the items and order.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object.
+
+    Returns:
+    - HttpResponse: The rendered 'store/checkout.html' template with the items and order.
+    """
     try:
         if request.user.is_authenticated:
             customer = request.user.customer
@@ -96,6 +147,17 @@ def checkout(request):
 
 # Signup page
 def user_signup(request):
+    """
+    Handles the user signup process.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object.
+
+    Returns:
+    - HttpResponse: The rendered 'store/signup.html' template with the signup form.
+
+    This function handles the user signup process. It checks if the request method is POST. If it is, it creates a SignupForm instance with the data from the request. If the form is valid, it saves the form data and displays a success message. If the form is not valid, it displays error messages for each field with errors. If the request method is not POST, it creates an empty SignupForm instance. Finally, it renders the 'store/signup.html' template with the signup form.
+    """
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
@@ -114,6 +176,17 @@ def user_signup(request):
 
 # Login page
 def user_login(request):
+    """
+    Handles the user login process.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object.
+
+    Returns:
+    - HttpResponse: The rendered 'store/login.html' template with the login form.
+
+    This function handles the user login process. It checks if the request method is POST. If it is, it creates a LoginForm instance with the data from the request. If the form is valid, it authenticates the user with the provided email and password, and if successful, logs the user in and redirects to the 'store' page. If the form is not valid, it displays error messages for each field with errors. If the request method is not POST, it creates an empty LoginForm instance. Finally, it renders the 'store/login.html' template with the login form.
+    """
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -138,12 +211,50 @@ def user_login(request):
 
 # Logout page
 def user_logout(request):
+    """
+    Logs out the user from the current session and redirects them to the login page.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object.
+
+    Returns:
+    - HttpResponseRedirect: A redirect to the 'login' page.
+
+    This function logs out the user from the current session by calling the `logout` function with the `request` object as an argument. It then redirects the user to the 'login' page using the `redirect` function.
+
+    Note:
+    - This function assumes that the user is already authenticated.
+    - The 'login' page is assumed to have a URL named 'login'.
+    """
     logout(request)
-    return redirect('store')
+    return redirect('login')
 
 
 # Add to Cart functionality
 def UpdateItem(request):
+    """
+    Update the quantity of an item in the user's cart based on the given action.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object containing the JSON data.
+
+    Returns:
+    - JsonResponse: A JSON response indicating whether the item was successfully added or removed from the cart.
+
+    This function retrieves the product ID and action from the JSON data in the request body. It then retrieves the customer object from the authenticated user, and the product object with the given product ID. 
+
+    The function creates or retrieves the order object associated with the customer and sets the `complete` flag to False. It also creates or retrieves the order item object associated with the order and the product.
+
+    Depending on the action, the function increments or decrements the quantity of the order item. If the quantity becomes less than or equal to 0, the order item is deleted.
+
+    The function saves the changes to the order item and returns a JSON response indicating that the item was added to the cart.
+
+    Note:
+    - This function assumes that the request object contains valid JSON data.
+    - The function assumes that the authenticated user has a valid customer object.
+    - The function assumes that the product with the given ID exists in the database.
+    - The function assumes that the order and order item objects have been created or retrieved successfully.
+    """
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
@@ -172,6 +283,28 @@ def UpdateItem(request):
 
 
 def processOrder(request):
+    """
+    Process the order based on the given request.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object containing the order data.
+
+    Returns:
+    - JsonResponse: A JSON response indicating the status of the order processing.
+
+    This function processes the order based on the given request. It first retrieves the order data from the request body and loads it as JSON. If the user is authenticated, it retrieves the customer object associated with the user. It then either creates a new order or retrieves an existing order that is not yet complete, associated with the customer. The function calculates the total value of the order from the data and checks if it matches the cart total of the order. If they match, the order is marked as complete. The order is then saved.
+
+    Additionally, a new shipping address is created using the customer, order, and shipping data from the request. The shipping address is associated with the customer and order, and the address, city, state, district, and phone number are extracted from the shipping data.
+
+    If the user is not authenticated, the function redirects to the login page.
+
+    Finally, a JSON response is returned indicating the status of the order processing.
+
+    Note:
+    - This function assumes that the request object contains valid JSON data.
+    - The function assumes that the authenticated user has a valid customer object.
+    - The function assumes that the order and shipping address objects are created or retrieved successfully.
+    """
     print('Data:', request.body)
     data = json.loads(request.body)
     if request.user.is_authenticated:
@@ -198,4 +331,78 @@ def processOrder(request):
 
 
 def orderComplete(request):
+    """
+    Render the 'order_complete.html' template for the order completion page.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object.
+
+    Returns:
+    - HttpResponse: The rendered 'order_complete.html' template.
+    """
     return render(request, 'store/order_complete.html')
+
+
+def profile(request):
+    """
+    Retrieves the user's orders and order items if the user is authenticated. If the user is staff, it calls the
+    `allOrders` function to retrieve all orders. Otherwise, it returns a dictionary with the orders and order items.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object.
+
+    Returns:
+    - HttpResponse: The rendered 'store/profile.html' template with the orders and order items.
+    """
+    orders = []
+    orderItems = []
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        try:
+            orders = Order.objects.filter(customer=customer, complete=True)
+            for order in orders:
+                orderItems = OrderItem.objects.filter(order=order)
+        except Order.DoesNotExist:
+            orders = ['No orders yet']
+            orderItems = []
+
+    if request.user.is_staff:
+        context = allOrders()
+    else:
+        context = {'orders': orders, 'orderItems': orderItems}
+    return render(request, 'store/profile.html', context)
+
+
+def allOrders():
+    """
+    Retrieves all completed orders with their corresponding shipping addresses, customer, order items, and order total.
+
+    Returns:
+        dict: A dictionary containing a list of dictionaries, each representing an order with its corresponding details.
+            The dictionary keys are:
+                - 'order' (Order): The order object.
+                - 'shipping_address' (ShippingAddress): The shipping address object associated with the order.
+                - 'customer' (User): The user object associated with the order.
+                - 'orderitems' (QuerySet): The queryset of order items associated with the order.
+                - 'order_total' (float): The total value of the order.
+
+    """
+    orders_with_shipping = []
+    all_orders = Order.objects.filter(complete=True).prefetch_related(
+        'shippingaddress_set', 'orderitem_set')
+    for order in all_orders:
+        orderitems = OrderItem.objects.filter(order=order)
+        shipping_address = ShippingAddress.objects.filter(order=order).first()
+        customer = order.customer.user
+        order_total = sum(item.get_total for item in orderitems)
+        orders_with_shipping.append({
+            'order': order,
+            'shipping_address': shipping_address,
+            'customer': customer,
+            'orderitems': orderitems,
+            'order_total': order_total
+        })
+    context = {
+        'orders_with_shipping': orders_with_shipping,
+    }
+    return (context)

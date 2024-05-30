@@ -39,10 +39,6 @@ $(document).ready(function () {
       });
   }
 
-  $("#make-payment").click(function () {
-    submitFormData();
-  });
-
   // Render the PayPal button into #paypal-button-container
   paypal
     .Buttons({
@@ -52,6 +48,13 @@ $(document).ready(function () {
         shape: "pill",
         height: 40,
       },
+      /**
+       * Creates an order using the provided data and actions.
+       *
+       * @param {Object} data - The data object containing information about the order.
+       * @param {Object} actions - The actions object with methods for creating an order.
+       * @return {Promise} A promise that resolves to the created order.
+       */
       createOrder: function (data, actions) {
         return actions.order.create({
           purchase_units: [
@@ -68,6 +71,19 @@ $(document).ready(function () {
       onApprove: function (data, actions) {
         return actions.order.capture().then(function (Details) {
           console.log(Details);
+          let errorDetail = Details.error;
+
+          if (errorDetail && errorDetail.issue === "INSTRUMENT_DECLINED") {
+            return actions.restart();
+          }
+
+          if (errorDetail) {
+            var msg = "Sorry, your transaction could not be processed.";
+            if (errorDetail.description)
+              msg += "\n\n" + errorDetail.description;
+            if (orderData.debug_id) msg += " (" + orderData.debug_id + ")";
+            return toastr.error(msg);
+          }
           if (Details.status == "COMPLETED") {
             submitFormData();
           }
