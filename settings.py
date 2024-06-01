@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'clockske.urls'
+ROOT_URLCONF = 'Clocks_Ke.urls'
 
 TEMPLATES = [
     {
