@@ -23,6 +23,9 @@
 				<div class="p-action">
 					<button class="btn update-cart" data-product="{{product.id}}" data-action="add">Add to Cart</button>
 					<button class="btn buy-now update-cart" data-product="{{product.id}}" data-action="add">Buy Now</button>
+					{% if request.user.is_staff %}
+					<a href="{% url 'edit_product' product.id %}"><button class="btn edit-product">Edit Product</button></a>
+					{% endif %}
 				</div>
 			</div>
 		</div>

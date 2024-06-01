@@ -26,6 +26,7 @@
 .checkout-address form button:hover {
   background-color: #14213d;
   color: #ffffff;
+  opacity: 0.5;
 }
 
 .checkout-address input {

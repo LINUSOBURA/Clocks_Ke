@@ -58,4 +58,11 @@ $(document).ready(function () {
     showMethod: "fadeIn",
     hideMethod: "fadeOut",
   };
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const reason = urlParams.get('reason');
+  if (reason === 'not_staff') {
+    toastr.error("You must be staff member to access the page.")
+  }
+
 });

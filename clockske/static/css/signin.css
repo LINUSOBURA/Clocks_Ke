@@ -24,10 +24,17 @@
   background-color: black;
 }
 
+.form-floating .btn:hover{
+  opacity: 0.5;
+}
+
 .form-floating {
   margin-bottom: 20px;
 }
 
 .label {
   margin-bottom: 2px;
+}
+.form-signin button:hover{
+  opacity: 0.5;
 }

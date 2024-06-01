@@ -1,7 +1,9 @@
 {% extends 'store/index.html' %} {% load static %} {% block content %}
 
 <section class="form-signin">
-  <div class="container">
+  <div
+    class="container"
+  >
     {% if messages %} {% for message in messages %} {% if message.tags == "error" %}
     <div class="alert alert-danger">{{ message }}</div>
     {% endif %} {% if message.tags == "success" %}

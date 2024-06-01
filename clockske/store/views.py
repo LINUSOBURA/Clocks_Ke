@@ -2,10 +2,13 @@ import json
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import user_passes_test
+from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 
-from .forms import LoginForm, SignupForm
+from .forms import LoginForm, ProductForm, SignupForm
 from .models import *
 
 # Create your views here
@@ -388,8 +391,10 @@ def allOrders():
 
     """
     orders_with_shipping = []
+    orderitems_prefetch = Prefetch(
+        'orderitem_set', queryset=OrderItem.objects.order_by('-date_added'))
     all_orders = Order.objects.filter(complete=True).prefetch_related(
-        'shippingaddress_set', 'orderitem_set')
+        'shippingaddress_set', orderitems_prefetch)
     for order in all_orders:
         orderitems = OrderItem.objects.filter(order=order)
         shipping_address = ShippingAddress.objects.filter(order=order).first()
@@ -406,3 +411,63 @@ def allOrders():
         'orders_with_shipping': orders_with_shipping,
     }
     return (context)
+
+
+@require_POST
+def update_shipping_status(request):
+    data = json.loads(request.body.decode('utf-8'))
+    order_id = data.get('order_id')
+    shipped = data.get('shipped') == True
+
+    print(f'order_id:{order_id} ')
+    try:
+        order = Order.objects.get(transaction_id=order_id)
+        order.shipped = shipped
+        order.save()
+        return JsonResponse({'status': 'success'})
+    except Order.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Order not found'})
+
+
+def staff_check(user):
+    return user.is_staff
+
+
+@user_passes_test(staff_check,
+                  login_url='login?next=/product/upload/&reason=not_staff')
+def product_upload(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'errors': form.errors})
+    else:
+        form = ProductForm()
+    return render(request, 'store/product_upload.html', {'form': form})
+
+
+@user_passes_test(staff_check)
+def edit_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({
+                'status': 'success',
+                'product_id': product_id
+            })
+        else:
+            return JsonResponse({'status': 'error', 'errors': form.errors})
+
+    else:
+        form = ProductForm(instance=product)
+
+    return render(request, 'store/edit_product.html', {
+        'form': form,
+        'product': product,
+        'product_id': product_id
+    })
