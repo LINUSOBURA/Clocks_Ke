@@ -1,0 +1,113 @@
+{% extends 'store/index.html' %} {% block content %} {% load static %}
+<section class="checkout">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 checkout-address">
+        <h3>Shipping Address</h3>
+        <form id="checkout-form" action="">
+          <div class="row">
+            <div class="col-12">
+              <label for="inputstate" class="form-label imp"
+                >State/Province*</label
+              >
+              <select class="form-select" id="counties" name="state" required>
+                <option value="">...</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label for="city" class="form-label imp">City*</label>
+              <select class="form-select" id="subcounties" name="city" required>
+                <option value="">...</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label for="inputEmail4" class="form-label imp">District*</label>
+              <select class="form-select" id="wards" name="district" required>
+                <option value="">...</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label for="street" class="form-label imp">Street Address*</label>
+              <input
+                type="text"
+                class="form-control"
+                aria-label="street"
+                name="address"
+              />
+            </div>
+
+            <div class="col">
+              <label for="phone" class="form-label imp">Phone Number*</label>
+              <input
+                id="phone_number"
+                type="number"
+                class="form-control"
+                aria-label="phone number"
+                name="phone"
+                placeholder="0700000000"
+                required
+              />
+            </div>
+          </div>
+
+          <button type="submit" class="btn" id="form-button">Continue</button>
+        </form>
+        <div class="payment-options hidden">
+          <h4>Payment Options</h4>
+          <!--<div class="payment-icons">
+            <button class="btn" id="make-payment">
+              <img src="{% static 'images/paypal.png' %}" alt="paypal" />
+            </button>
+          </div>-->
+          <!-- Set up a container element for the button -->
+          <div id="paypal-button-container"></div>
+        </div>
+      </div>
+      <div class="col-md-6 checkout-order">
+        <h3>My Order</h3>
+        <hr />
+
+        {% for item in items %}
+        <div class="order-summary">
+          <img src="{{ item.product.image.url }}" alt="" />
+          <div class="order-description">
+            <p class="product-name">{{item.product.name}}</p>
+            <p class="quantity">Quantity: {{item.quantity}}</p>
+            <p class="product-price">${{item.get_total | floatformat:2}}</p>
+          </div>
+        </div>
+        {% endfor %}
+
+        <hr />
+
+        <div class="totals mb-auto">
+          <div class="subtotal">
+            <p>Cart Subtotal</p>
+            <p>${{order.get_cart_total | floatformat:2}}</p>
+          </div>
+
+          <div class="shipping">
+            <p>Shipping</p>
+            <p>$0</p>
+          </div>
+
+          <hr />
+
+          <div class="total">
+            <p>Total</p>
+            <p>${{order.get_cart_total | floatformat:2}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Include the PayPal JavaScript SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=AVwuZul6zP7XWlWPBlQ3WhGTFpXuK3tz5Uonzj06xpvWTuHIxWNXR74IWWqSNXZj8lumlFzF7a5Ixyi1&currency=USD"></script>
+<script>
+  window.total = "{{order.get_cart_total}}";
+</script>
+
+<script src="{% static 'js/checkout.js' %}"></script>
+<script src="{% static 'js/populate.js' %}"></script>
+{% endblock %}

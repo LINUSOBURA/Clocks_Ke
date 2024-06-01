@@ -1,0 +1,34 @@
+{% extends 'store/index.html' %} {% block content %} {% load static %}
+<section class="product">
+	<div class="container">
+		<div class="row product-row">
+			<div class="col-sm-6 product-image">
+				<div class="p-image">
+					<img src="{{ product.image.url }}" alt="" class="img-fluid" />
+				</div>
+
+			</div>
+			<div class="col-sm-6 product-description">
+				<div class="p-details">
+					<div class="p-text">
+						<p class="product-name">{{product.name}}</p>
+						<p class="product-text">
+							{{product.details}}
+						</p>
+					</div>
+					<div class="price">
+						<p class="product-price">${{product.price | floatformat:2}}</p>
+					</div>
+				</div>
+				<div class="p-action">
+					<button class="btn update-cart" data-product="{{product.id}}" data-action="add">Add to Cart</button>
+					<button class="btn buy-now update-cart" data-product="{{product.id}}" data-action="add">Buy Now</button>
+					{% if request.user.is_staff %}
+					<a href="{% url 'edit_product' product.id %}"><button class="btn edit-product">Edit Product</button></a>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+</section>
+
+{%endblock %}
