@@ -28,8 +28,8 @@
             ><button id="logout">Logout</button></a
           >
 
-          <button class="staff-button hidden">Add Products</button>
-          <button class="staff-button hidden">Edit Products</button>
+          <button class="staff-button add-product hidden">Add Products</button>
+          <button class="staff-button edit-products hidden">Edit Products</button>
         </div>
       </div>
     </div>
@@ -92,6 +92,12 @@
                   {{item.customer.first_name}} | {{item.shipping_address.phone}}
                   | {{item.customer.email}}
                 </p>
+              </li>
+              <li>
+                <div class="flex"><p>Done Shipping?</p>
+                <input type="checkbox" class="shipping-status-checkbox" data-order-id="{{ item.order.transaction_id }}" {% if item.order.shipped %}checked{% endif %}>
+              </div>
+                
               </li>
             </ul>
 

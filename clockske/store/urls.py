@@ -16,4 +16,11 @@ urlpatterns = [
     path('process_order', views.processOrder, name='process_order'),
     path('order_complete', views.orderComplete, name='order_complete'),
     path('all-orders', views.allOrders, name='all-orders'),
+    path('update_shipping_status',
+         views.update_shipping_status,
+         name='update_shipping_status'),
+    path('product_upload', views.product_upload, name='product_upload'),
+    path('product/edit/<int:product_id>',
+         views.edit_product,
+         name='edit_product')
 ]

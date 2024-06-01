@@ -31,7 +31,7 @@
               <input
                 type="text"
                 class="form-control"
-                aria-label="Last name"
+                aria-label="street"
                 name="address"
               />
             </div>
@@ -39,10 +39,12 @@
             <div class="col">
               <label for="phone" class="form-label imp">Phone Number*</label>
               <input
+                id="phone_number"
                 type="number"
                 class="form-control"
-                aria-label="Last name"
+                aria-label="phone number"
                 name="phone"
+                placeholder="0700000000"
                 required
               />
             </div>
@@ -105,6 +107,7 @@
 <script>
   window.total = "{{order.get_cart_total}}";
 </script>
+
 <script src="{% static 'js/checkout.js' %}"></script>
 <script src="{% static 'js/populate.js' %}"></script>
 {% endblock %}

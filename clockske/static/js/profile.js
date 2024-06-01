@@ -21,3 +21,48 @@ $(".shipping-status").each(function () {
     );
   }
 });
+
+$('.add-product').click(function(){
+  window.location.href = '/product_upload';
+})
+
+$('.edit-products').click(function(){
+  window.location.href = '/shop';
+})
+$(document).ready(function(){
+  $('.shipping-status-checkbox').change(function(){
+    const checkbox = $(this);
+    const orderId = checkbox.data('order-id');
+    const shipped = checkbox.is(':checked');
+    let url = '/update_shipping_status'
+
+  
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify({
+        order_id: orderId,
+        shipped: shipped
+      })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.status !== 'success') {
+        toastr.error('Failed to update shipping status');
+        this.checked = !shipped; // Revert checkbox state
+      }
+    })
+    .catch(error => {
+      toastr.error('Error updating shipping status');
+      this.checked = !shipped; // Revert checkbox state
+    });
+  })
+})

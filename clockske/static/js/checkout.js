@@ -1,12 +1,22 @@
+if (cart_total <= 0) {
+  $("#checkout-form").hide();
+}
+
 $(document).ready(function () {
-  if (cart_total <= 0) {
-    $("#checkout-form").hide();
-  }
+
   $("#checkout-form").submit(function (e) {
-    e.preventDefault();
-    $("#form-button").hide();
-    console.log("Form Submitted...");
-    $(".payment-options").removeClass("hidden");
+    const phoneInput = $("#phone_number");
+    const phoneValue = phoneInput.val();
+    if (phoneValue.length !== 10) {
+      e.preventDefault();
+      toastr.error("Phone number should be 10 digits!");
+      phoneInput.focus();
+    } else {
+      e.preventDefault();
+      $("#form-button").hide();
+      console.log("Form Submitted...");
+      $(".payment-options").removeClass("hidden");
+    }
   });
 
   function submitFormData() {
