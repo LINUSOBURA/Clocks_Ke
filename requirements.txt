@@ -21,7 +21,6 @@ snowballstemmer==2.2.0
 soupsieve==2.5
 sphinx==7.1.2
 sphinx-rtd-theme==2.0.0
-sphinxawesome-theme==5.1.5
 sphinxcontrib-applehelp==1.0.4
 sphinxcontrib-devhelp==1.0.2
 sphinxcontrib-htmlhelp==2.0.1
