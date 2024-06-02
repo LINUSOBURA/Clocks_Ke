@@ -1,1 +1,1 @@
-web: gunicorn clockske.wsgi --log-file-
+web: gunicorn clockske.wsgi:application --log-file -
