@@ -1,0 +1,1 @@
+web: gunicorn clockske.wsgi:application --log-file -
