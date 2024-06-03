@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -6,6 +7,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Prefetch, Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from .forms import LoginForm, ProductForm, SignupForm
@@ -362,7 +364,8 @@ def profile(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         try:
-            orders = Order.objects.filter(customer=customer, complete=True)
+            orders = Order.objects.filter(
+                customer=customer, complete=True).order_by('-date_ordered')
             for order in orders:
                 orderItems = OrderItem.objects.filter(order=order)
         except Order.DoesNotExist:
@@ -391,21 +394,22 @@ def allOrders():
 
     """
     orders_with_shipping = []
-    orderitems_prefetch = Prefetch(
-        'orderitem_set', queryset=OrderItem.objects.order_by('-date_added'))
     all_orders = Order.objects.filter(complete=True).prefetch_related(
-        'shippingaddress_set', orderitems_prefetch)
+        'shippingaddress_set', 'orderitem_set').order_by('-date_ordered')
     for order in all_orders:
-        orderitems = OrderItem.objects.filter(order=order)
+        orderitems = (OrderItem.objects.filter(
+            order=order)).order_by('order_id')
         shipping_address = ShippingAddress.objects.filter(order=order).first()
         customer = order.customer.user
+        order_date = timezone.localtime(order.date_ordered)
         order_total = sum(item.get_total for item in orderitems)
         orders_with_shipping.append({
             'order': order,
             'shipping_address': shipping_address,
             'customer': customer,
             'orderitems': orderitems,
-            'order_total': order_total
+            'order_total': order_total,
+            'order_date': order_date
         })
     context = {
         'orders_with_shipping': orders_with_shipping,

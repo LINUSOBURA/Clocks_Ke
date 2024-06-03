@@ -180,7 +180,7 @@ a img {
 
 .trending .p-details .p-text {
   max-width: 70%;
-  height: 80px;
+  height: 100px;
 }
 .trending .p-details .price {
   align-self: flex-end;
@@ -188,7 +188,7 @@ a img {
   padding-right: 5px;
   font-weight: 600;
   color: #fca311;
-  height: 80px;
+  height: 100px;
 }
 
 .trending .p-details .product-name {
