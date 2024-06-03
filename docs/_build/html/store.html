@@ -46,7 +46,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">clockske</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Clocks_Ke</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="clockske.html">clockske package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">store package</a><ul>
@@ -62,6 +62,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-store.forms">store.forms module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#store.forms.LoginForm"><code class="docutils literal notranslate"><span class="pre">LoginForm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#store.forms.ProductForm"><code class="docutils literal notranslate"><span class="pre">ProductForm</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#store.forms.SignupForm"><code class="docutils literal notranslate"><span class="pre">SignupForm</span></code></a></li>
 </ul>
 </li>
@@ -106,12 +107,17 @@
 <li class="toctree-l4"><a class="reference internal" href="#store.views.allOrders"><code class="docutils literal notranslate"><span class="pre">allOrders()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#store.views.cart"><code class="docutils literal notranslate"><span class="pre">cart()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#store.views.checkout"><code class="docutils literal notranslate"><span class="pre">checkout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#store.views.edit_product"><code class="docutils literal notranslate"><span class="pre">edit_product()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#store.views.orderComplete"><code class="docutils literal notranslate"><span class="pre">orderComplete()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#store.views.processOrder"><code class="docutils literal notranslate"><span class="pre">processOrder()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#store.views.product"><code class="docutils literal notranslate"><span class="pre">product()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#store.views.product_upload"><code class="docutils literal notranslate"><span class="pre">product_upload()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#store.views.profile"><code class="docutils literal notranslate"><span class="pre">profile()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#store.views.search"><code class="docutils literal notranslate"><span class="pre">search()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#store.views.shop"><code class="docutils literal notranslate"><span class="pre">shop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#store.views.staff_check"><code class="docutils literal notranslate"><span class="pre">staff_check()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#store.views.store"><code class="docutils literal notranslate"><span class="pre">store()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#store.views.update_shipping_status"><code class="docutils literal notranslate"><span class="pre">update_shipping_status()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#store.views.user_login"><code class="docutils literal notranslate"><span class="pre">user_login()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#store.views.user_logout"><code class="docutils literal notranslate"><span class="pre">user_logout()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#store.views.user_signup"><code class="docutils literal notranslate"><span class="pre">user_signup()</span></code></a></li>
@@ -138,7 +144,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="modules.html">clockske</a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Clocks_Ke</a></li>
       <li class="breadcrumb-item active">store package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/store.rst.txt" rel="nofollow"> View page source</a>
@@ -254,6 +260,45 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="store.forms.LoginForm.media">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#store.forms.LoginForm.media" title="Permalink to this definition"></a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="store.forms.ProductForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">store.forms.</span></span><span class="sig-name descname"><span class="pre">ProductForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/store/forms.html#ProductForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#store.forms.ProductForm" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelForm</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="store.forms.ProductForm.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/store/forms.html#ProductForm.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#store.forms.ProductForm.Meta" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="store.forms.ProductForm.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['name',</span> <span class="pre">'price',</span> <span class="pre">'details',</span> <span class="pre">'image']</span></em><a class="headerlink" href="#store.forms.ProductForm.Meta.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="store.forms.ProductForm.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#store.forms.ProductForm.Meta.model" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#store.models.Product" title="store.models.Product"><code class="xref py py-class docutils literal notranslate"><span class="pre">Product</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="store.forms.ProductForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'details':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'image':</span> <span class="pre">&lt;django.forms.fields.ImageField</span> <span class="pre">object&gt;,</span> <span class="pre">'name':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'price':</span> <span class="pre">&lt;django.forms.fields.FloatField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#store.forms.ProductForm.base_fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="store.forms.ProductForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#store.forms.ProductForm.declared_fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="store.forms.ProductForm.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#store.forms.ProductForm.media" title="Permalink to this definition"></a></dt>
 <dd><p>Return all media required to render the widgets on this form.</p>
 </dd></dl>
 
@@ -1552,6 +1597,27 @@ class built by <code class="docutils literal notranslate"><span class="pre">crea
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="store.views.edit_product">
+<span class="sig-prename descclassname"><span class="pre">store.views.</span></span><span class="sig-name descname"><span class="pre">edit_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/store/views.html#edit_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#store.views.edit_product" title="Permalink to this definition"></a></dt>
+<dd><p>Edit a product by its ID.</p>
+<p>This view function allows staff users to edit a product by its ID. It first retrieves the product object from the database using the provided product ID. If the request method is POST, it creates a ProductForm instance with the request data and the product instance. If the form is valid, it saves the form and returns a JSON response with the status ‘success’ and the product ID. If the form is not valid, it returns a JSON response with the status ‘error’ and the form errors. If the request method is not POST, it creates a ProductForm instance with the product instance and renders the ‘store/edit_product.html’ template with the form, product, and product ID.</p>
+<p>Parameters:
+- request (HttpRequest): The HTTP request object.
+- product_id (int): The ID of the product to be edited.</p>
+<p>Returns:
+- JsonResponse: A JSON response indicating the status of the edit operation.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If the edit is successful, the response will have the status ‘success’ and the product ID.</p></li>
+<li><p>If the edit is unsuccessful, the response will have the status ‘error’ and the form errors.</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p>HttpResponse: The rendered ‘store/edit_product.html’ template with the form, product, and product ID.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="store.views.orderComplete">
 <span class="sig-prename descclassname"><span class="pre">store.views.</span></span><span class="sig-name descname"><span class="pre">orderComplete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/store/views.html#orderComplete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#store.views.orderComplete" title="Permalink to this definition"></a></dt>
 <dd><p>Render the ‘order_complete.html’ template for the order completion page.</p>
@@ -1594,6 +1660,22 @@ Renders the ‘store/product.html’ template with the retrieved product, items,
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="store.views.product_upload">
+<span class="sig-prename descclassname"><span class="pre">store.views.</span></span><span class="sig-name descname"><span class="pre">product_upload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/store/views.html#product_upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#store.views.product_upload" title="Permalink to this definition"></a></dt>
+<dd><p>Uploads a product if the user is a staff member.</p>
+<p>Parameters:
+- request (HttpRequest): The HTTP request object.</p>
+<p>Returns:
+- JsonResponse: A JSON response indicating the status of the upload operation.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If the upload is successful, the response will have the status ‘success’.</p></li>
+<li><p>If the upload is unsuccessful, the response will have the status ‘error’ and the form errors.</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="store.views.profile">
 <span class="sig-prename descclassname"><span class="pre">store.views.</span></span><span class="sig-name descname"><span class="pre">profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/store/views.html#profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#store.views.profile" title="Permalink to this definition"></a></dt>
 <dd><p>Retrieves the user’s orders and order items if the user is authenticated. If the user is staff, it calls the
@@ -1602,6 +1684,30 @@ Renders the ‘store/product.html’ template with the retrieved product, items,
 - request (HttpRequest): The HTTP request object.</p>
 <p>Returns:
 - HttpResponse: The rendered ‘store/profile.html’ template with the orders and order items.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="store.views.search">
+<span class="sig-prename descclassname"><span class="pre">store.views.</span></span><span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/store/views.html#search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#store.views.search" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieves products from the database based on a search query and returns them as a JSON response.</p>
+<p>Parameters:
+- request (HttpRequest): The HTTP request object containing the search query.</p>
+<p>Returns:
+- JsonResponse: A JSON response containing the search results. Each result is a dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>id (int): The ID of the product.</p></li>
+<li><p>name (str): The name of the product.</p></li>
+</ul>
+</div></blockquote>
+<p>This function takes a search query from the request object and uses it to filter the Product objects in the database.
+The query is obtained from the ‘q’ parameter of the request GET parameters.
+The search is performed on the ‘name’ and ‘details’ fields of the Product objects.
+The results are then transformed into a list of dictionaries, where each dictionary contains the ‘id’ and ‘name’ of a product.
+Finally, the search results are returned as a JSON response.</p>
+<p>Note:
+- The search query is case-insensitive.
+- The ‘safe’ parameter of the JsonResponse is set to False to allow serializing arbitrary objects.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1615,6 +1721,11 @@ Renders the ‘store/product.html’ template with the retrieved product, items,
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="store.views.staff_check">
+<span class="sig-prename descclassname"><span class="pre">store.views.</span></span><span class="sig-name descname"><span class="pre">staff_check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/store/views.html#staff_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#store.views.staff_check" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="store.views.store">
 <span class="sig-prename descclassname"><span class="pre">store.views.</span></span><span class="sig-name descname"><span class="pre">store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/store/views.html#store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#store.views.store" title="Permalink to this definition"></a></dt>
 <dd><p>Renders the store page for the user. If the user is authenticated, retrieves their order and its items. If not,
@@ -1624,6 +1735,21 @@ the store template along with the order and items.</p>
 - request (HttpRequest): The HTTP request object.</p>
 <p>Returns:
 - HttpResponse: The rendered store page with the trending products, order, and items.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="store.views.update_shipping_status">
+<span class="sig-prename descclassname"><span class="pre">store.views.</span></span><span class="sig-name descname"><span class="pre">update_shipping_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/store/views.html#update_shipping_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#store.views.update_shipping_status" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the shipping status of an order.</p>
+<p>This function is a view that handles a POST request. It expects the request body to contain a JSON object with two keys: ‘order_id’ and ‘shipped’. The ‘order_id’ key should contain the ID of the order to update, and the ‘shipped’ key should contain a boolean value indicating whether the order has been shipped or not.</p>
+<p>The function first decodes the request body from bytes to a string and then parses it as JSON. It retrieves the ‘order_id’ and ‘shipped’ values from the JSON object.</p>
+<p>The function then tries to retrieve the order with the given ‘order_id’ from the database. If the order is found, it updates the ‘shipped’ field of the order object with the value of the ‘shipped’ parameter. It then saves the changes to the order object.</p>
+<p>If the order is not found, the function returns a JSON response with a ‘status’ key set to ‘error’ and a ‘message’ key set to ‘Order not found’.</p>
+<p>If the order is found and the shipping status is successfully updated, the function returns a JSON response with a ‘status’ key set to ‘success’.</p>
+<p>Parameters:
+- request (HttpRequest): The HTTP request object containing the JSON data.</p>
+<p>Returns:
+- JsonResponse: A JSON response indicating the status of the shipping status update. If the update is successful, the response will have the status ‘success’. If the update is unsuccessful, the response will have the status ‘error’ and the message ‘Order not found’.</p>
 </dd></dl>
 
 <dl class="py function">

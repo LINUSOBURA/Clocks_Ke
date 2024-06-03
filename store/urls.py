@@ -22,5 +22,6 @@ urlpatterns = [
     path('product_upload', views.product_upload, name='product_upload'),
     path('product/edit/<int:product_id>',
          views.edit_product,
-         name='edit_product')
+         name='edit_product'),
+    path('search', views.search, name='search'),
 ]
