@@ -61,7 +61,7 @@
       <a class="navbar-brand navbar-logo" href="{% url 'store' %}">CLOCKS_KE</a>
       <a class="nav-link" aria-current="page" href="{% url 'shop' %}">Shop</a>
       {% if user.is_staff %}
-      <a href="{% url 'admin:index' %}">Staff</a>
+      <a href="{% url 'admin:index' %}" target="_blank">Staff</a>
       {% else %}
       <a href="{% url 'cart' %}">Cart({{order.get_cart_items}})</a>
       {% endif %}

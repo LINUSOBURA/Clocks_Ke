@@ -22,11 +22,9 @@
         <p>{{user.email}}</p>
         <hr />
 
-        <div class="actions">
+        <div class="profile-actions">
           <button id="view_orders">View Orders</button>
-          <a class="logout" href="{% url 'logout'%}"
-            ><button id="logout">Logout</button></a
-          >
+          <a class="logout" href="{% url 'logout'%}"><button id="logout">Logout</button></a>
 
           <button class="staff-button add-product hidden">Add Products</button>
           <button class="staff-button edit-products hidden">Edit Products</button>
@@ -51,7 +49,7 @@
                 </div>
                 <div class="order-header">
                   <p><strong>Order Date</strong></p>
-                  <p class="detail">{{item.order.date_ordered}}</p>
+                  <p class="detail">{{item.order_date}}</p>
                 </div>
                 <div class="order-header">
                   <p><strong>Shipped</strong></p>
@@ -94,10 +92,12 @@
                 </p>
               </li>
               <li>
-                <div class="flex"><p>Done Shipping?</p>
-                <input type="checkbox" class="shipping-status-checkbox" data-order-id="{{ item.order.transaction_id }}" {% if item.order.shipped %}checked{% endif %}>
-              </div>
-                
+                <div class="flex">
+                  <p>Done Shipping?</p>
+                  <input type="checkbox" class="shipping-status-checkbox"
+                    data-order-id="{{ item.order.transaction_id }}" {% if item.order.shipped %}checked{% endif %}>
+                </div>
+
               </li>
             </ul>
 
