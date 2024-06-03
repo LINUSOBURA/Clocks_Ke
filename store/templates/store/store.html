@@ -5,13 +5,37 @@
 			<div class="col-md-6 barner-text">
 				<h2>Time is money, Invest on it</h2>
 				<p>Welcome to Clocks_Ke, your ultimate destination for exquisite Wall clocks. Explore a curated
-					collection clocks crafted with precision and style. Whenever you're a charming clock to adorn your
-					home, we have something for every moment. Shop now and elevate your sense of time with Clocks_Ke</p>
+					collection clocks crafted with precision and style.</p>
+				<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<p>We have something for every moment</p>
+						</div>
+						<div class="carousel-item">
+							<p>Use our Beautiful designs to make your home standout</p>
+						</div>
+						<div class="carousel-item">
+							<p>Shop now and elevate your sense of time with Clocks_Ke</p>
+						</div>
+					</div>
+				</div>
 				<a href="{% url 'shop' %}"><button class="shop-now btn">Shop Now</button></a>
 
 			</div>
 			<div class="col-md-6 d-none d-md-block  barner-img">
-				<img src="{% static 'images/clock2.png' %}" alt="" />
+				<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<img src="{% static 'images/clock2.png' %}" alt="" />
+						</div>
+						<div class="carousel-item">
+							<img src="{% static 'images/clock13.png' %}" alt="" />
+						</div>
+						<div class="carousel-item">
+							<img src="{% static 'images/clock14.png' %}" alt="" />
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -19,7 +43,7 @@
 </section>
 
 <section class="trending">
-	<h4>Trending Designs</h4>
+	<h5>Trending Designs</h5>
 	<div class="container">
 		<div class="row">
 			{% for product in trending_products %}
