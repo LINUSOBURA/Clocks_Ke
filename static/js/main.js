@@ -19,6 +19,20 @@ $(document).ready(function () {
     }
   });
 
+  $(".buy-now").click(function(){
+    let product_id = $(this).data("product");
+    let action = $(this).data("action");
+    console.log("productId", product_id, "Action", action);
+    console.log("User", user);
+
+    if (user == "AnonymousUser") {
+      window.location.href = "/login";
+    } else {
+      localStorage.setItem("buyNowClicked", "true");
+      updateUserOrder(product_id, action);
+    }
+  })
+
   function updateUserOrder(product_id, action) {
     console.log("User is authenticated, sending data...");
 
@@ -40,6 +54,40 @@ $(document).ready(function () {
         location.reload();
       });
   }
+
+
+  // search
+  $('.search-input').on('input', function(){
+    let query = $(this).val();
+    console.log("query", query);
+    if (query.length > 0){
+      $.ajax({
+        url: '/search',
+        data: {'q': query},
+        dataType: 'json',
+        success: function(data){
+          let results = $('#search-results ul');
+          results.empty();
+          if (data.length > 0){
+            $.each(data, function(index, product){
+              results.append('<li><a href="/product/' + product.id + '">' + product.name + '</a></li>')
+            })
+            $('#search-results').show();
+          } else{
+            $('#search-results').hide();
+          }
+        }
+      })
+    } else {
+      $('#search-results').hide();
+    }
+  })
+
+  $(document).click(function(e){
+    if (!$(e.target).closest('.search-input, #search-results').length){
+      $('#search-results').hide();
+    }
+  })
 
   /** Toastr */
   toastr.options = {
@@ -66,3 +114,10 @@ $(document).ready(function () {
   }
 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  if (localStorage.getItem("buyNowClicked") == "true") {
+    localStorage.removeItem("buyNowClicked");
+    window.location.href = "/checkout";
+  }
+})

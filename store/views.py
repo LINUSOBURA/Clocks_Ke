@@ -3,7 +3,7 @@ import json
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
@@ -415,6 +415,25 @@ def allOrders():
 
 @require_POST
 def update_shipping_status(request):
+    """
+    Updates the shipping status of an order.
+
+    This function is a view that handles a POST request. It expects the request body to contain a JSON object with two keys: 'order_id' and 'shipped'. The 'order_id' key should contain the ID of the order to update, and the 'shipped' key should contain a boolean value indicating whether the order has been shipped or not.
+
+    The function first decodes the request body from bytes to a string and then parses it as JSON. It retrieves the 'order_id' and 'shipped' values from the JSON object.
+
+    The function then tries to retrieve the order with the given 'order_id' from the database. If the order is found, it updates the 'shipped' field of the order object with the value of the 'shipped' parameter. It then saves the changes to the order object.
+
+    If the order is not found, the function returns a JSON response with a 'status' key set to 'error' and a 'message' key set to 'Order not found'.
+
+    If the order is found and the shipping status is successfully updated, the function returns a JSON response with a 'status' key set to 'success'.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object containing the JSON data.
+
+    Returns:
+    - JsonResponse: A JSON response indicating the status of the shipping status update. If the update is successful, the response will have the status 'success'. If the update is unsuccessful, the response will have the status 'error' and the message 'Order not found'.
+    """
     data = json.loads(request.body.decode('utf-8'))
     order_id = data.get('order_id')
     shipped = data.get('shipped') == True
@@ -436,6 +455,17 @@ def staff_check(user):
 @user_passes_test(staff_check,
                   login_url='login?next=/product/upload/&reason=not_staff')
 def product_upload(request):
+    """
+    Uploads a product if the user is a staff member.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object.
+
+    Returns:
+    - JsonResponse: A JSON response indicating the status of the upload operation.
+      - If the upload is successful, the response will have the status 'success'.
+      - If the upload is unsuccessful, the response will have the status 'error' and the form errors.
+    """
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
@@ -450,6 +480,21 @@ def product_upload(request):
 
 @user_passes_test(staff_check)
 def edit_product(request, product_id):
+    """
+    Edit a product by its ID.
+
+    This view function allows staff users to edit a product by its ID. It first retrieves the product object from the database using the provided product ID. If the request method is POST, it creates a ProductForm instance with the request data and the product instance. If the form is valid, it saves the form and returns a JSON response with the status 'success' and the product ID. If the form is not valid, it returns a JSON response with the status 'error' and the form errors. If the request method is not POST, it creates a ProductForm instance with the product instance and renders the 'store/edit_product.html' template with the form, product, and product ID.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object.
+    - product_id (int): The ID of the product to be edited.
+
+    Returns:
+    - JsonResponse: A JSON response indicating the status of the edit operation.
+      - If the edit is successful, the response will have the status 'success' and the product ID.
+      - If the edit is unsuccessful, the response will have the status 'error' and the form errors.
+    - HttpResponse: The rendered 'store/edit_product.html' template with the form, product, and product ID.
+    """
     product = get_object_or_404(Product, id=product_id)
 
     if request.method == 'POST':
@@ -471,3 +516,32 @@ def edit_product(request, product_id):
         'product': product,
         'product_id': product_id
     })
+
+
+def search(request):
+    """
+    Retrieves products from the database based on a search query and returns them as a JSON response.
+
+    Parameters:
+    - request (HttpRequest): The HTTP request object containing the search query.
+
+    Returns:
+    - JsonResponse: A JSON response containing the search results. Each result is a dictionary with the following keys:
+        - id (int): The ID of the product.
+        - name (str): The name of the product.
+
+    This function takes a search query from the request object and uses it to filter the Product objects in the database.
+    The query is obtained from the 'q' parameter of the request GET parameters.
+    The search is performed on the 'name' and 'details' fields of the Product objects.
+    The results are then transformed into a list of dictionaries, where each dictionary contains the 'id' and 'name' of a product.
+    Finally, the search results are returned as a JSON response.
+
+    Note:
+    - The search query is case-insensitive.
+    - The 'safe' parameter of the JsonResponse is set to False to allow serializing arbitrary objects.
+    """
+    query = request.GET.get('q', '')
+    results = Product.objects.filter(
+        Q(name__icontains=query) | Q(details__icontains=query))
+    data = [{'id': product.id, 'name': product.name} for product in results]
+    return JsonResponse(data, safe=False)

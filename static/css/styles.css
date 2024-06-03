@@ -18,16 +18,19 @@ i {
   color: black;
 }
 
-.btn-link {
-  color: black;
+a {
+  color: black !important;
 }
 
 /* navbar */
-.custom-nav .custom-navbar {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+
+.navbar{
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  background-color: #ffffff !important;
+}
+.custom-navbar {
   padding: 10px 20px;
   min-height: 80px;
 }
@@ -39,17 +42,18 @@ i {
   padding: 5px;
 }
 
-.custom-navbar a {
+.navbar a {
   text-decoration: none;
   color: black;
   font-size: 20px;
+  margin: 5px;
 }
 
-.custom-navbar a:hover {
+.navbar a:hover {
   color: black;
 }
 
-.custom-navbar .end {
+.navbar .end {
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -57,6 +61,39 @@ i {
 a img {
   width: 20px;
   height: 20px;
+}
+
+.search-input{
+  height: fit-content !important;
+}
+
+.navbar-toggler icon{
+   margin-top: 10px !important;
+}
+
+.search-results {
+  position: absolute;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ddd;
+  width: 100%;
+  margin-top: 40px;
+}
+.search-results ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.search-results li {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+.search-results li a {
+  text-decoration: none;
+  color: black;
+}
+.search-results li a:hover {
+  text-decoration: underline;
 }
 
 /* store page*/
@@ -172,6 +209,7 @@ a img {
 /* footer */
 .footer {
   margin-top: auto;
+  width: 100%;
 }
 .footer-content {
   background-color: black;
