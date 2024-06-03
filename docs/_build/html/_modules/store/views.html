@@ -43,7 +43,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">clockske</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Clocks_Ke</a></li>
 </ul>
 
         </div>
@@ -75,10 +75,13 @@
 
 <span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">authenticate</span><span class="p">,</span> <span class="n">login</span><span class="p">,</span> <span class="n">logout</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">user_passes_test</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Prefetch</span><span class="p">,</span> <span class="n">Q</span>
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">JsonResponse</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span>
+<span class="kn">from</span> <span class="nn">django.views.decorators.http</span> <span class="kn">import</span> <span class="n">require_POST</span>
 
-<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">LoginForm</span><span class="p">,</span> <span class="n">SignupForm</span>
+<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">LoginForm</span><span class="p">,</span> <span class="n">ProductForm</span><span class="p">,</span> <span class="n">SignupForm</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Create your views here</span>
@@ -461,8 +464,10 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">orders_with_shipping</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">orderitems_prefetch</span> <span class="o">=</span> <span class="n">Prefetch</span><span class="p">(</span>
+        <span class="s1">&#39;orderitem_set&#39;</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">OrderItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-date_added&#39;</span><span class="p">))</span>
     <span class="n">all_orders</span> <span class="o">=</span> <span class="n">Order</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">complete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span>
-        <span class="s1">&#39;shippingaddress_set&#39;</span><span class="p">,</span> <span class="s1">&#39;orderitem_set&#39;</span><span class="p">)</span>
+        <span class="s1">&#39;shippingaddress_set&#39;</span><span class="p">,</span> <span class="n">orderitems_prefetch</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">all_orders</span><span class="p">:</span>
         <span class="n">orderitems</span> <span class="o">=</span> <span class="n">OrderItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
         <span class="n">shipping_address</span> <span class="o">=</span> <span class="n">ShippingAddress</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
@@ -479,6 +484,140 @@
         <span class="s1">&#39;orders_with_shipping&#39;</span><span class="p">:</span> <span class="n">orders_with_shipping</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="update_shipping_status"><a class="viewcode-back" href="../../store.html#store.views.update_shipping_status">[docs]</a><span class="nd">@require_POST</span>
+<span class="k">def</span> <span class="nf">update_shipping_status</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updates the shipping status of an order.</span>
+
+<span class="sd">    This function is a view that handles a POST request. It expects the request body to contain a JSON object with two keys: &#39;order_id&#39; and &#39;shipped&#39;. The &#39;order_id&#39; key should contain the ID of the order to update, and the &#39;shipped&#39; key should contain a boolean value indicating whether the order has been shipped or not.</span>
+
+<span class="sd">    The function first decodes the request body from bytes to a string and then parses it as JSON. It retrieves the &#39;order_id&#39; and &#39;shipped&#39; values from the JSON object.</span>
+
+<span class="sd">    The function then tries to retrieve the order with the given &#39;order_id&#39; from the database. If the order is found, it updates the &#39;shipped&#39; field of the order object with the value of the &#39;shipped&#39; parameter. It then saves the changes to the order object.</span>
+
+<span class="sd">    If the order is not found, the function returns a JSON response with a &#39;status&#39; key set to &#39;error&#39; and a &#39;message&#39; key set to &#39;Order not found&#39;.</span>
+
+<span class="sd">    If the order is found and the shipping status is successfully updated, the function returns a JSON response with a &#39;status&#39; key set to &#39;success&#39;.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - request (HttpRequest): The HTTP request object containing the JSON data.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - JsonResponse: A JSON response indicating the status of the shipping status update. If the update is successful, the response will have the status &#39;success&#39;. If the update is unsuccessful, the response will have the status &#39;error&#39; and the message &#39;Order not found&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+    <span class="n">order_id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;order_id&#39;</span><span class="p">)</span>
+    <span class="n">shipped</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;shipped&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;order_id:</span><span class="si">{</span><span class="n">order_id</span><span class="si">}</span><span class="s1"> &#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="n">Order</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">transaction_id</span><span class="o">=</span><span class="n">order_id</span><span class="p">)</span>
+        <span class="n">order</span><span class="o">.</span><span class="n">shipped</span> <span class="o">=</span> <span class="n">shipped</span>
+        <span class="n">order</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;success&#39;</span><span class="p">})</span>
+    <span class="k">except</span> <span class="n">Order</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Order not found&#39;</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="staff_check"><a class="viewcode-back" href="../../store.html#store.views.staff_check">[docs]</a><span class="k">def</span> <span class="nf">staff_check</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">user</span><span class="o">.</span><span class="n">is_staff</span></div>
+
+
+<div class="viewcode-block" id="product_upload"><a class="viewcode-back" href="../../store.html#store.views.product_upload">[docs]</a><span class="nd">@user_passes_test</span><span class="p">(</span><span class="n">staff_check</span><span class="p">,</span>
+                  <span class="n">login_url</span><span class="o">=</span><span class="s1">&#39;login?next=/product/upload/&amp;reason=not_staff&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">product_upload</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Uploads a product if the user is a staff member.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - request (HttpRequest): The HTTP request object.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - JsonResponse: A JSON response indicating the status of the upload operation.</span>
+<span class="sd">      - If the upload is successful, the response will have the status &#39;success&#39;.</span>
+<span class="sd">      - If the upload is unsuccessful, the response will have the status &#39;error&#39; and the form errors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ProductForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;success&#39;</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="p">})</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ProductForm</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;store/product_upload.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="edit_product"><a class="viewcode-back" href="../../store.html#store.views.edit_product">[docs]</a><span class="nd">@user_passes_test</span><span class="p">(</span><span class="n">staff_check</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">edit_product</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">product_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Edit a product by its ID.</span>
+
+<span class="sd">    This view function allows staff users to edit a product by its ID. It first retrieves the product object from the database using the provided product ID. If the request method is POST, it creates a ProductForm instance with the request data and the product instance. If the form is valid, it saves the form and returns a JSON response with the status &#39;success&#39; and the product ID. If the form is not valid, it returns a JSON response with the status &#39;error&#39; and the form errors. If the request method is not POST, it creates a ProductForm instance with the product instance and renders the &#39;store/edit_product.html&#39; template with the form, product, and product ID.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - request (HttpRequest): The HTTP request object.</span>
+<span class="sd">    - product_id (int): The ID of the product to be edited.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - JsonResponse: A JSON response indicating the status of the edit operation.</span>
+<span class="sd">      - If the edit is successful, the response will have the status &#39;success&#39; and the product ID.</span>
+<span class="sd">      - If the edit is unsuccessful, the response will have the status &#39;error&#39; and the form errors.</span>
+<span class="sd">    - HttpResponse: The rendered &#39;store/edit_product.html&#39; template with the form, product, and product ID.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">product</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Product</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">product_id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ProductForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">product</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span>
+                <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;success&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;product_id&#39;</span><span class="p">:</span> <span class="n">product_id</span>
+            <span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="p">})</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ProductForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">product</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;store/edit_product.html&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+        <span class="s1">&#39;product&#39;</span><span class="p">:</span> <span class="n">product</span><span class="p">,</span>
+        <span class="s1">&#39;product_id&#39;</span><span class="p">:</span> <span class="n">product_id</span>
+    <span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="search"><a class="viewcode-back" href="../../store.html#store.views.search">[docs]</a><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves products from the database based on a search query and returns them as a JSON response.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - request (HttpRequest): The HTTP request object containing the search query.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - JsonResponse: A JSON response containing the search results. Each result is a dictionary with the following keys:</span>
+<span class="sd">        - id (int): The ID of the product.</span>
+<span class="sd">        - name (str): The name of the product.</span>
+
+<span class="sd">    This function takes a search query from the request object and uses it to filter the Product objects in the database.</span>
+<span class="sd">    The query is obtained from the &#39;q&#39; parameter of the request GET parameters.</span>
+<span class="sd">    The search is performed on the &#39;name&#39; and &#39;details&#39; fields of the Product objects.</span>
+<span class="sd">    The results are then transformed into a list of dictionaries, where each dictionary contains the &#39;id&#39; and &#39;name&#39; of a product.</span>
+<span class="sd">    Finally, the search results are returned as a JSON response.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">    - The search query is case-insensitive.</span>
+<span class="sd">    - The &#39;safe&#39; parameter of the JsonResponse is set to False to allow serializing arbitrary objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">Product</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">Q</span><span class="p">(</span><span class="n">name__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">details__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">product</span><span class="o">.</span><span class="n">name</span><span class="p">}</span> <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
