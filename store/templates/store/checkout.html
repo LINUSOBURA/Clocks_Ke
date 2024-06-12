@@ -7,9 +7,7 @@
         <form id="checkout-form" action="">
           <div class="row">
             <div class="col-12">
-              <label for="inputstate" class="form-label imp"
-                >State/Province*</label
-              >
+              <label for="inputstate" class="form-label imp">State/Province*</label>
               <select class="form-select" id="counties" name="state" required>
                 <option value="">...</option>
               </select>
@@ -28,25 +26,13 @@
             </div>
             <div class="col-12">
               <label for="street" class="form-label imp">Street Address*</label>
-              <input
-                type="text"
-                class="form-control"
-                aria-label="street"
-                name="address"
-              />
+              <input type="text" class="form-control" aria-label="street" name="address" />
             </div>
 
             <div class="col">
               <label for="phone" class="form-label imp">Phone Number*</label>
-              <input
-                id="phone_number"
-                type="number"
-                class="form-control"
-                aria-label="phone number"
-                name="phone"
-                placeholder="0700000000"
-                required
-              />
+              <input id="phone_number" type="number" class="form-control" aria-label="phone number" name="phone"
+                placeholder="0700000000" required />
             </div>
           </div>
 
@@ -103,9 +89,11 @@
   </div>
 </section>
 <!-- Include the PayPal JavaScript SDK -->
-<script src="https://www.paypal.com/sdk/js?client-id=AVwuZul6zP7XWlWPBlQ3WhGTFpXuK3tz5Uonzj06xpvWTuHIxWNXR74IWWqSNXZj8lumlFzF7a5Ixyi1&currency=USD"></script>
+<script
+  src="https://www.paypal.com/sdk/js?client-id=AVwuZul6zP7XWlWPBlQ3WhGTFpXuK3tz5Uonzj06xpvWTuHIxWNXR74IWWqSNXZj8lumlFzF7a5Ixyi1&currency=USD"></script>
 <script>
   window.total = "{{order.get_cart_total}}";
+  window.demographicsUrl = "{%static 'demographics.json'%}";
 </script>
 
 <script src="{% static 'js/checkout.js' %}"></script>

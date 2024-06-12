@@ -57,4 +57,47 @@ $(document).ready(function(){
             toastr.error('An error occurred');
         });
 	});
+
+    /** Delete a Product */
+    $('.delete-product').click(function(){
+        let product_id = $(this).data('product')
+        let action = $(this).data('action')
+        console.log(product_id, action)
+        
+        if (confirm("Do you want to delete the product?") == true){
+            deleteProduct(product_id,action)
+        } else{
+            window.reload()
+        }
+            
+
+
+    })
 });
+
+function deleteProduct(product_id, action) {
+
+    let url = "/delete_product";
+
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken,
+      },
+      body: JSON.stringify({ productId: product_id, action: action }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.status === 'success') {
+            toastr.success('Product deleted successfully! Redirecting in 5 seconds...');
+            setTimeout(function() {
+                window.location.href = '/shop';
+            }, 5000);
+        } else {
+            toastr.error('Failed to delete product');
+        }
+      });
+  }

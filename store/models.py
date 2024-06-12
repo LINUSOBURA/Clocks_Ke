@@ -118,7 +118,21 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(default=0, null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
+    product_name = models.CharField(max_length=255, null=True, blank=True)
+    product_price = models.DecimalField(max_digits=10,
+                                        decimal_places=2,
+                                        null=True,
+                                        blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.product:
+            self.product_name = self.product.name
+            self.product_price = self.product.price
+        super().save(*args, **kwargs)
+
     @property
     def get_total(self):
-        total = self.product.price * self.quantity
-        return total
+        if self.product:
+            return self.product_price * self.quantity
+        else:
+            return 0
