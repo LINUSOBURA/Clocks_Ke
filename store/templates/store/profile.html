@@ -64,8 +64,8 @@
                 <h6><strong>Items</strong></h6>
                 <div class="order-item-details">
                   <p>
-                    {{ orderitem.product.name }} - {{ orderitem.quantity }} x
-                    {{orderitem.product.price | floatformat:2 }}
+                    {{ orderitem.product_name }} - {{ orderitem.quantity }} x
+                    {{orderitem.product_price | floatformat:2 }}
                   </p>
                   <p>
                     Total Paid: <u>${{item.order_total | floatformat:2}}</u>
@@ -139,8 +139,8 @@
             <ul>
               {% for item in orderItems %}
               <li>
-                {{ item.product.name }} - {{ item.quantity }} x
-                {{item.product.price }}
+                {{ item.product_name }} - {{ item.quantity }} x
+                {{item.product_price }}
               </li>
               {% endfor %}
             </ul>

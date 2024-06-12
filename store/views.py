@@ -522,6 +522,18 @@ def edit_product(request, product_id):
     })
 
 
+def delete_product(request):
+    data = json.loads(request.body)
+    productId = data['productId']
+    action = data['action']
+    product = get_object_or_404(Product, id=productId)
+    if action == 'delete':
+        product.delete()
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'error'})
+
+
 def search(request):
     """
     Retrieves products from the database based on a search query and returns them as a JSON response.

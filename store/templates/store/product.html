@@ -21,15 +21,20 @@
 					</div>
 				</div>
 				<div class="p-action">
-					<button class="btn update-cart" data-product="{{product.id}}" data-action="add">Add to Cart</button>
-					<button class="btn buy-now" data-product="{{product.id}}" data-action="add">Buy Now</button>
 					{% if request.user.is_staff %}
 					<a href="{% url 'edit_product' product.id %}"><button class="btn edit-product">Edit
 							Product</button></a>
+					<button class="btn delete-product" data-product="{{product.id}}"
+						data-action="delete">Delete</button>
+					{%else%}
+					<button class="btn update-cart" data-product="{{product.id}}" data-action="add">Add to Cart</button>
+					<button class="btn buy-now" data-product="{{product.id}}" data-action="add">Buy Now</button>
 					{% endif %}
 				</div>
 			</div>
 		</div>
 </section>
+
+<script src="{% static 'js/add-edit-products.js'%}"></script>
 
 {%endblock %}
