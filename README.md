@@ -12,5 +12,4 @@ CLOCKS_KE is an online shopping platform for custom made resin Clocks. It has be
 - run the app (python manage.py runserver)
 
 ## Reading the docs
-
-- Type in the console (firefox clockske/docs/\_build/html/index.html &) and follow the link
+- https://linusobura.github.io/Clocks_Ke/

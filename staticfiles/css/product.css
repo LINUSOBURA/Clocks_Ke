@@ -55,3 +55,7 @@
 .product .product-description .p-action button:hover{
   opacity: 0.5;
 }
+
+.delete-product{
+  background-color: red !important;
+}

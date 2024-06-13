@@ -1,28 +1,32 @@
 $(document).ready(function () {
-  counties_url =
-    "https://raw.githubusercontent.com/njoguamos/kenya-demographics-units/467906ef2ebb2ad9c6b7071330da7e513885c6cc/src/counties/counties.json";
+  const dataUrl = window.demographicsUrl;
+  let dataCache = {};
 
-  subcounties_url =
-    "https://raw.githubusercontent.com/njoguamos/kenya-demographics-units/master/src/sub-counties/sub-counties.json";
-
-  wards_url =
-    "https://raw.githubusercontent.com/LINUSOBURA/hosted_data/main/kenya_wards.json";
-  // populate select
-  function populateCounties() {
-    const selectElement = $("#counties");
-    fetch(counties_url)
+  // Fetch and populate data
+  function populateData() {
+    fetch(dataUrl)
       .then((response) => response.json())
       .then((data) => {
-        data.forEach((item) => {
-          const option = $("<option></option>").val(item.code).text(item.name);
-          selectElement.append(option);
-        });
+        dataCache = data;
+        populateCounties(data.counties);
       })
       .catch((error) => console.error("Error:", error));
   }
 
-  // populate subcounties
-  function populateSubcounties(countyCode) {
+  // Populate Counties dropdown
+  function populateCounties(counties) {
+    const selectElement = $("#counties");
+
+    counties.forEach((county) => {
+      const option = $("<option></option>")
+        .val(county.county_id)
+        .text(county.name);
+      selectElement.append(option);
+    });
+  }
+
+  // Populate Subcounties (Constituencies) dropdown based on selected County
+  function populateSubcounties(countyId) {
     const selectElement = $("#subcounties");
 
     selectElement.empty();
@@ -30,47 +34,40 @@ $(document).ready(function () {
       $("<option></option>").val("").text("Select Sub-County...")
     );
 
-    fetch(subcounties_url)
-      .then((response) => response.json())
-      .then((data) => {
-        data
-          .filter((item) => item.county_code == countyCode)
-          .forEach((item) => {
-            const option = $("<option></option>")
-              .val(item.code)
-              .text(item.name);
-            selectElement.append(option);
-          });
-      })
-      .catch((error) => console.error("Error:", error));
+    dataCache.constituencies
+      .filter((constituency) => constituency.county_id == countyId)
+      .forEach((constituency) => {
+        const option = $("<option></option>")
+          .val(constituency.constituency_id)
+          .text(constituency.name);
+        selectElement.append(option);
+      });
   }
 
-  // populate wards
-  function populateWards(subcountyCode) {
+  // Populate Wards dropdown based on selected Subcounty (Constituency)
+  function populateWards(subcountyId) {
     const selectElement = $("#wards");
+
     selectElement.empty();
     selectElement.append($("<option></option>").val("").text("Select Ward..."));
 
-    fetch(wards_url)
-      .then((response) => response.json())
-      .then((data) => {
-        data
-          .filter((item) => item.constituency_code == subcountyCode)
-          .forEach((item) => {
-            const option = $("<option></option>")
-              .val(item.code)
-              .text(item.name);
-            selectElement.append(option);
-          });
-      })
-      .catch((error) => console.error("Error:", error));
+    dataCache.wards
+      .filter((ward) => ward.constituency_id == subcountyId)
+      .forEach((ward) => {
+        const option = $("<option></option>").val(ward.ward_id).text(ward.name);
+        selectElement.append(option);
+      });
   }
 
-  //Event Listeners
+  // Event listener for Counties dropdown
   $("#counties").on("change", function () {
-    const selectedCountyCode = $(this).val();
-    if (selectedCountyCode) {
-      populateSubcounties(selectedCountyCode);
+    const selectedCountyId = $(this).val();
+
+    if (selectedCountyId) {
+      populateSubcounties(selectedCountyId);
+      $("#wards")
+        .empty()
+        .append($("<option></option>").val("").text("Select Ward..."));
     } else {
       $("#subcounties")
         .empty()
@@ -81,10 +78,12 @@ $(document).ready(function () {
     }
   });
 
+  // Event listener for Subcounties (Constituencies) dropdown
   $("#subcounties").on("change", function () {
-    const selectedSubcountyCode = $(this).val();
-    if (selectedSubcountyCode) {
-      populateWards(selectedSubcountyCode);
+    const selectedSubcountyId = $(this).val();
+
+    if (selectedSubcountyId) {
+      populateWards(selectedSubcountyId);
     } else {
       $("#wards")
         .empty()
@@ -92,5 +91,6 @@ $(document).ready(function () {
     }
   });
 
-  populateCounties();
+  // Initialize data
+  populateData();
 });
