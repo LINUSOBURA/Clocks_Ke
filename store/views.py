@@ -561,3 +561,7 @@ def search(request):
         Q(name__icontains=query) | Q(details__icontains=query))
     data = [{'id': product.id, 'name': product.name} for product in results]
     return JsonResponse(data, safe=False)
+
+
+def custom_404(request, exception):
+    return render(request, 'store/404.html', {}, status=404)
