@@ -48,7 +48,8 @@
 		<div class="row">
 			{% for product in trending_products %}
 			<div class="col-md-6 col-lg-4">
-				<div class="p-image"><img src="{{ product.image.url }}" alt="" /></div>
+				<div class="p-image"><img src="{% static 'images/' %}{{ product.image.url|cut:'/images/' }}" alt="" />
+				</div>
 				<div class="p-details">
 					<div class="p-text">
 						<p class="product-name">{{product.name}}</p>

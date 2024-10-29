@@ -6,27 +6,17 @@
       <div class="col-md-8">
         <h3>Shopping Cart</h3>
         {% for item in items %}
-        <div
-          class="cart-item d-flex justify-content-between align-items-center p-3 my-3 bg-white rounded"
-        >
-          <img src="{{ item.product.image.url }}" class="img-fluid" />
+        <div class="cart-item d-flex justify-content-between align-items-center p-3 my-3 bg-white rounded">
+          <img src="{% static 'images/' %}{{ item.product.image.url|cut:'/images/' }}" class="img-fluid" />
           <div class="item-details flex-grow-1 ml-3">
             <h5>{{item.product.name}}</h5>
             <div class="quantity">
               <p>Quantity:</p>
-              <p
-                class="update-cart"
-                data-product="{{item.product.id}}"
-                data-action="remove"
-              >
+              <p class="update-cart" data-product="{{item.product.id}}" data-action="remove">
                 <button class="btn btn-sm">-</button>
               </p>
               <p>{{item.quantity}}</p>
-              <p
-                class="update-cart"
-                data-product="{{item.product.id}}"
-                data-action="add"
-              >
+              <p class="update-cart" data-product="{{item.product.id}}" data-action="add">
                 <button class="btn btn-sm">+</button>
               </p>
             </div>
@@ -55,15 +45,11 @@
               ${{order.get_cart_total | floatformat:2}}
             </p>
           </div>
-          <a href="{% url 'checkout' %}"
-            ><button class="btn btn-dark btn-block my-3">Checkout</button></a
-          >
+          <a href="{% url 'checkout' %}"><button class="btn btn-dark btn-block my-3">Checkout</button></a>
 
-          <a href="{% url 'shop' %}"
-            ><button class="btn btn-link btn-block">
+          <a href="{% url 'shop' %}"><button class="btn btn-link btn-block">
               Continue shopping
-            </button></a
-          >
+            </button></a>
         </div>
       </div>
     </div>
